@@ -24,14 +24,18 @@ module.exports = function(argv) {
     case 'setup':
       process.exit(0)
     case 'test':
-      // todo
+      argv.push('--target=wasm32-unknown-emscripten')
+      argv.push('--no-run')
+      cargo(argv)
+      return
     case 'build':
-      // todo
+      argv.push('--target=wasm32-unknown-emscripten')
+      cargo(argv)
+      return
     default:
       cargo(argv)
+      return
   }
-
-  process.exit(0)
 
   var client = require('webdriverio').remote({
       user: process.env.SAUCE_USERNAME,
