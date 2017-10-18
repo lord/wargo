@@ -1,0 +1,16 @@
+{
+  "name": "wargo",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "git@github.com:lord/wargo.git",
+  "author": "Robert Lord <robert@lord.io>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "chalk": "^2.1.0",
+    "webdriverio": "^4.8.0"
+  },
+  "bin": {
+    "wargo": "index.js"
+  }
+}
