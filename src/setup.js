@@ -34,7 +34,7 @@ module.exports = function() {
   let checks = [
     ['rustup --version', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
     ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
-    ['cmake --version', 'gcc', 'gcc not found. Try installing with `sudo apt-get install build-essential` and rerunning?'],
+    ['gcc --version', 'gcc', 'gcc not found. Try installing with `sudo apt-get install build-essential` and rerunning?'],
     ['python --version', 'python', 'python not found. Try installing with `sudo apt-get install python` and rerunning?'],
   ]
 
