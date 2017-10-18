@@ -8,6 +8,7 @@
   "private": true,
   "dependencies": {
     "chalk": "^2.1.0",
+    "node-static": "^0.7.10",
     "webdriverio": "^4.8.0"
   },
   "bin": {
