@@ -1,3 +1,5 @@
+"use strict"
+
 const log = require('./log')
 const child_process = require('child_process')
 const chalk = require('chalk')

@@ -1,3 +1,5 @@
+"use strict"
+
 const setup = require('./setup')
 const cargo = require('./cargo')
 const test = require('./test')

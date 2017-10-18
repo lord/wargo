@@ -1,3 +1,5 @@
+"use strict"
+
 const child_process = require('child_process')
 const log = require('./log')
 const fs = require('fs')
