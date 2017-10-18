@@ -19,9 +19,11 @@ function checkInstall(cmd) {
 }
 
 function getEnv() {
-  var cmd = 'cd ~/.emsdk && source emsdk_env.sh > /dev/null 2> /dev/null && node -pe "JSON.stringify(process.env)"';
-  let res = child_process.execSync(cmd, {env: process.env, stdio: 'pipe'});
-  process.env = JSON.parse(res.toString())
+  if (checkInstall('test -e ~/.emsdk/emsdk_env.sh')) {
+    var cmd = 'cd ~/.emsdk && source emsdk_env.sh > /dev/null 2> /dev/null && node -pe "JSON.stringify(process.env)"';
+    let res = child_process.execSync(cmd, {env: process.env, stdio: 'pipe'})
+    process.env = JSON.parse(res.toString())
+  }
 }
 
 module.exports = function() {
@@ -32,7 +34,7 @@ module.exports = function() {
 
   log('checking dependencies...')
   let checks = [
-    ['rustup --version', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
+    ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
     ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
     ['gcc --version', 'gcc', 'gcc not found. Try installing with `sudo apt-get install build-essential` and rerunning?'],
     ['python --version', 'python', 'python not found. Try installing with `sudo apt-get install python` and rerunning?'],
