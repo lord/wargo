@@ -14,7 +14,7 @@ To use, just `wargo build` instead of `cargo build`. We'll automatically make su
     cd meow
     wargo build
 
-Want to run your tests in the browser? No problem. Just run Selenium locally, set some environment variables, and you're ready to go.
+Want to run your tests in the browser? No problem — we've got `wargo test`. Just run Selenium locally, set some environment variables, and you're ready to go.
 
     WEBDRIVER_HOST="localhost"
     WEBDRIVER_PORT="5555"
