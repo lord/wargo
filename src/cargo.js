@@ -16,14 +16,12 @@ module.exports = function(args) {
   let res = child_process.exec(`${cmd} --color always`, {env: process.env, stdio: 'pipe'})
   let outBuf = ""
   res.stdout.on('data', (dat) => {
-    dat = dat.toString()
-    outBuf += dat
-    console.log(dat)
+    outBuf += dat.toString()
+    process.stdout.write(dat)
   })
   res.stderr.on('data', (dat) => {
-    dat = dat.toString()
-    outBuf += dat
-    console.warn(dat)
+    outBuf += dat.toString()
+    process.stderr.write(dat)
   })
   res.on('exit', (code, signal) => {
     if (code !== 0) {

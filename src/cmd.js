@@ -36,22 +36,4 @@ module.exports = function(argv) {
       cargo(argv)
       return
   }
-
-  var client = require('webdriverio').remote({
-      user: process.env.SAUCE_USERNAME,
-      key: process.env.SAUCE_ACCESS_KEY,
-      host: 'localhost',
-      port: 4445,
-      desiredCapabilities: {
-          browserName: 'chrome'
-      }
-  });
-
-  client
-      .init()
-      .url('http://www.meow.com')
-      .getTitle().then(function(title) {
-          console.log('Title was: ' + title);
-      })
-      .end();
 }
