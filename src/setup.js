@@ -66,7 +66,7 @@ module.exports = function() {
     process.exit(1)
   }
 
-  if (checkInstall('[[ -x ~/.emsdk/emsdk ]]')) {
+  if (checkInstall('test -x ~/.emsdk/emsdk')) {
     log('found emsdk installation in ~/.emsdk')
     log('setting environment...')
     getEnv()
@@ -78,7 +78,7 @@ module.exports = function() {
   } else {
     log('emsdk not found, installing to ~/.emsdk...')
     child_process.execSync(`mkdir ~/.emsdk && cd ~/.emsdk && curl ${EMSDK_URL} | tar --strip-components=1 -zxvf -`, {stdio: 'pipe', env: process.env})
-    if (!checkInstall('[[ -x ~/.emsdk/emsdk ]]')) {
+    if (!checkInstall('test -x ~/.emsdk/emsdk')) {
       log('installation failed! file a bug at https://github.com/lord/wargo?')
       process.exit(1)
     }
