@@ -21,7 +21,7 @@ function checkInstall(cmd) {
 function getEnv() {
   if (checkInstall('test -e ~/.emsdk/emsdk_env.sh')) {
     var cmd = 'cd ~/.emsdk && source emsdk_env.sh > /dev/null 2> /dev/null && node -pe "JSON.stringify(process.env)"';
-    let res = child_process.execSync(cmd, {env: process.env, stdio: 'pipe'})
+    let res = child_process.execSync(cmd, {env: process.env, stdio: 'pipe', shell: '/bin/bash'})
     process.env = JSON.parse(res.toString())
   }
 }
