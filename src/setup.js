@@ -8,13 +8,9 @@ const path = require('path')
 const CHECK = chalk.green.bold('✔')
 const CROSS = chalk.red.bold('✘')
 const EMSDK_URL = "https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz"
-
-const LINUX_SCRIPT = `
-mkdir ~/.emccinstall
-cd ~/.emccinstall &&
-curl -L -o emscripten.tgz https://github.com/koute/emscripten-build/releases/download/emscripten-1.37.21-1-x86_64-unknown-linux-gnu/emscripten-1.37.21-1-x86_64-unknown-linux-gnu.tgz &&
-tar -xf emscripten.tgz
-`
+const EMSDK_URL_PREBUILT_DEBIAN = "https://github.com/lord/emsdk-build/releases/download/initial/emsdk-debian.tgz"
+const EMSDK_URL_PREBUILT_TRUSTY = "https://github.com/lord/emsdk-build/releases/download/initial/emsdk-trusty.tgz"
+const EMSDK_URL_PREBUILT_XENIAL = "https://github.com/lord/emsdk-build/releases/download/initial/emsdk-xenial.tgz"
 
 function checkInstall(cmd) {
   try {
@@ -35,7 +31,7 @@ function getEnv() {
 }
 
 module.exports = function() {
-  if (checkInstall('emcc --help')) {
+  if (checkInstall('emcc --version')) {
     log('using emcc already in $PATH')
     return
   }
@@ -64,9 +60,7 @@ module.exports = function() {
 
   let didErr = false
   checks.forEach(([cmd, name, errMsg]) => {
-    if (checkInstall(cmd)) {
-      log('   ', CHECK, name)
-    } else {
+    if (!checkInstall(cmd)) {
       log('   ', CROSS, name)
       log('     ', chalk.red(errMsg))
       didErr = true
@@ -78,48 +72,41 @@ module.exports = function() {
     process.exit(1)
   }
 
-  if (process.platform === "darwin") {
-    if (checkInstall('test -x ~/.emsdk/emsdk')) {
-      log('found emsdk installation in ~/.emsdk')
-      log('setting environment...')
-      getEnv()
-      if (checkInstall('emcc --help')) {
-        return
-      } else {
-        log('couldn\'t find emcc')
-      }
-    } else {
-      log('emsdk not found, installing to ~/.emsdk...')
-      child_process.execSync(`mkdir ~/.emsdk && cd ~/.emsdk && curl ${EMSDK_URL} | tar --strip-components=1 -zxvf -`, {stdio: 'pipe', env: process.env})
-      if (!checkInstall('test -x ~/.emsdk/emsdk')) {
-        log('installation failed! file a bug at https://github.com/lord/wargo?')
-        process.exit(1)
-      }
-    }
-
-    log('installing emcc...')
-    child_process.execSync(`cd ~/.emsdk && ./emsdk install sdk-1.37.22-64bit`, {env: process.env, stdio: [null, 1, 2]})
-    child_process.execSync(`cd ~/.emsdk && ./emsdk activate sdk-1.37.22-64bit`, {env: process.env, stdio: [null, 1, 2]})
-    getEnv()
-    if (checkInstall('emcc --help')) {
-      return
-    } else {
-      log('couldn\'t install emcc. file a bug at https://github.com/lord/wargo?')
-    }
+  if (checkInstall('test -x ~/.emsdk/emsdk')) {
+    log('found emsdk installation in ~/.emsdk')
   } else {
-    if (!checkInstall('test -x ~/.emccinstall/emscripten/emcc')) {
-      log('installing emcc...')
-      child_process.execSync(LINUX_SCRIPT, {env: process.env, stdio: 'inherit'})
+    log('emsdk not found, installing to ~/.emsdk...')
+    if (process.detailedos.codename === "xenial") {
+      child_process.execSync(`mkdir ~/.emsdk && cd ~/.emsdk && curl -L ${EMSDK_URL_PREBUILT_XENIAL} | tar --strip-components=1 -zxf -`, {stdio: 'inherit', env: process.env})
+      child_process.execSync(`cd ~/.emsdk && ./emsdk activate --build=Release sdk-incoming-64bit`, {env: process.env, stdio: 'inherit'})
+    } else if (process.detailedos.codename === "trusty") {
+      child_process.execSync(`mkdir ~/.emsdk && cd ~/.emsdk && curl -L ${EMSDK_URL_PREBUILT_TRUSTY} | tar --strip-components=1 -zxf -`, {stdio: 'inherit', env: process.env})
+      child_process.execSync(`cd ~/.emsdk && ./emsdk activate --build=Release sdk-tag-1.37.22-64bit`, {env: process.env, stdio: 'inherit'})
+    } else if (process.detailedos.dist === "Debian") {
+      child_process.execSync(`mkdir ~/.emsdk && cd ~/.emsdk && curl -L ${EMSDK_URL_PREBUILT_DEBIAN} | tar --strip-components=1 -zxf -`, {stdio: 'inherit', env: process.env})
+      child_process.execSync(`cd ~/.emsdk && ./emsdk activate --build=Release sdk-incoming-64bit`, {env: process.env, stdio: 'inherit'})
+    } else {
+      child_process.execSync(`mkdir ~/.emsdk && cd ~/.emsdk && curl -L ${EMSDK_URL} | tar --strip-components=1 -zxvf -`, {stdio: 'inherit', env: process.env})
     }
-    let epath = path.join(process.env.HOME, '.emccinstall', 'emscripten')
-    let epathFastcomp = path.join(process.env.HOME, '.emccinstall', 'emscripten-fastcomp')
+    if (!checkInstall('test -x ~/.emsdk/emsdk')) {
+      log('installation failed! file a bug at https://github.com/lord/wargo?')
+      process.exit(1)
+    }
+  }
 
-    process.env.PATH = [process.env.PATH, epath, epathFastcomp].join(':')
-    process.env.EMSCRIPTEN = epath
-    process.env.EMSCRIPTEN_FASTCOMP = epathFastcomp
-    process.env.LLVM = epathFastcomp
-    if (!checkInstall('test -x ~/.emccinstall/emscripten/emcc')) {
-      log('couldn\'t install emcc. file a bug at https://github.com/lord/wargo?')
-    }
+  log('setting environment...')
+  getEnv()
+  if (checkInstall('emcc --version')) {
+    return
+  }
+
+  log('installing emcc...')
+  child_process.execSync(`cd ~/.emsdk && ./emsdk install sdk-1.37.22-64bit`, {env: process.env, stdio: [null, 1, 2]})
+  child_process.execSync(`cd ~/.emsdk && ./emsdk activate sdk-1.37.22-64bit`, {env: process.env, stdio: [null, 1, 2]})
+  getEnv()
+  if (checkInstall('emcc --version')) {
+    return
+  } else {
+    log('couldn\'t install emcc. file a bug at https://github.com/lord/wargo?')
   }
 }

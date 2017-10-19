@@ -39,12 +39,20 @@ module.exports = function(filename) {
     child.kill();
   })
 
+  var capabilities = {}
+  if (process.env.WEBDRIVER_CAPABILITIES && process.env.WEBDRIVER_CAPABILITIES.length > 2) {
+    capabilities = JSON.parse(process.env.WEBDRIVER_CAPABILITIES)
+  }
+  if (process.env.TRAVIS_JOB_NUMBER) {
+    capabilities['tunnel-identifier'] = process.env.TRAVIS_JOB_NUMBER
+  }
+
   var client = require('webdriverio').remote({
     user: process.env.SAUCE_USERNAME,
     key: process.env.SAUCE_ACCESS_KEY,
     host: process.env.WEBDRIVER_HOST || 'localhost',
     port: process.env.WEBDRIVER_PORT || 4445,
-    desiredCapabilities: JSON.parse(process.env.WEBDRIVER_CAPABILITIES || "{}")
+    desiredCapabilities: capabilities
   })
 
   client

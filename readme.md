@@ -28,12 +28,11 @@ Don't want to install Selenium? `wargo` can also run tests using [Sauce Connect]
     WEBDRIVER_CAPABILITIES='{"browserName": "chrome"}'
     wargo test
 
-## Thanks
-
-- koute's [emscripten-build](https://github.com/koute/emscripten-build) (found through [cargo-web](https://github.com/koute/cargo-web)) since the emscripten-provided linux binaries are very lacking
-
 ## TODO
 
-- [ ] errors for webdriver connection failure
+- [x] errors for webdriver connection failure
 - [ ] detect python 2 vs 3
 - [ ] print less crap to the console
+- [ ] sha check downloaded binaries
+- [ ] pass arguments to test binary
+- [ ] colored output from test binary

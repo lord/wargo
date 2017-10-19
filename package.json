@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "^2.1.0",
+    "getos": "^3.0.1",
     "node-static": "^0.7.10",
     "webdriverio": "^4.8.0"
   },
