@@ -1,0 +1,22 @@
+language: rust
+rust:
+  - stable
+  # - beta
+  # - nightly
+# matrix:
+#   allow_failures:
+#     - rust: nightly
+
+install:
+  - npm install -g
+  - cargo new --bin exampleproj
+
+script:
+  - cd exampleproj
+  - wargo build
+
+addons:
+  sauce_connect:
+    username: "robertlord"
+  jwt:
+    secure: "XqvuDqyoedhZLh/sTAOyndnP5ZSXXa5TnEFOkDxgjAhcLLWW6ZgwnMf23gKitoLSlxYLJzaTiwth13wUgwcyPSXEreiq7E/FFF49OcCx5+hHlgVqtS16ufXU1OTizg21rYGKOUrNQQmWd/jNhTx8TbiRizlKyqNIIO6/oTVTEi+ljSjyWl4aVvkZCvhDvA/kYLLzkz3FArISj0CLuRrHgdF1fyYuGB3Jvmjd92GTYafKpO8/IhvCFziup1V7kWp9caU+WZ+fK8B2vkjWvDDXn/o17vSUVd78vnwCRO3UB/PRKtJQmP9J7EH/z2TaDVvuzyhxTr9NCo2rjMWm9OZr30Y3HEyL80pEAWfcMjn2NEm3eKui8n360v0ag7BAHs5NkMWzOSPkZcVN57wgpNag15gbHOZJa1PFqMmwBSwXRbIbGcOdjLZq1dWaTXCsLHX3Yr1WPsJ7kUpX7y8N9cT5ogmR28jE/CoeLt2zDNGmo8310XlnEHtJ8uBQyGo6Mrv5oX8dk0Z0hTcdXnsqBOwJspSWLMKsOyZhPBd3geTvRMAT9s/A9lMlr7QQ6Sgafvnq3JE5rKG+cvN3oLSH3Zw5oQf1GDCGh6bhWsLoHVNq6wrjwE8jUjH+zBRkrNP088yzysMG/qTTm4L2HcXj/SO6ZcsscchN2mfeuWb/y4Z5Fp8="

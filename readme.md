@@ -21,9 +21,19 @@ Want to run your tests in the browser? No problem — we've got `wargo test`. Ju
     WEBDRIVER_PORT="5555"
     wargo test
 
-Don't want to install Selenium? `wargo` can also run tests using [Sauce Labs](https://saucelabs.com/).
+Don't want to install Selenium? `wargo` can also run tests using [Sauce Connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy).
 
     SAUCE_USERNAME="your username"
     SAUCE_ACCESS_KEY="blah-1234-1234-1234"
     WEBDRIVER_CAPABILITIES='{"browserName": "chrome"}'
     wargo test
+
+## Thanks
+
+- koute's [emscripten-build](https://github.com/koute/emscripten-build) (found through [cargo-web](https://github.com/koute/cargo-web)) since the emscripten-provided linux binaries are very lacking
+
+## TODO
+
+- [ ] errors for webdriver connection failure
+- [ ] detect python 2 vs 3
+- [ ] print less crap to the console

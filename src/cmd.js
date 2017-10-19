@@ -3,6 +3,7 @@
 const setup = require('./setup')
 const cargo = require('./cargo')
 const test = require('./test')
+const log = require('./log')
 
 const HELP_STR = `wargo automatically configures the emscripten compiler environment for your cargo command,
 on any linux or mac os computer.
@@ -31,7 +32,16 @@ module.exports = function(argv) {
       argv.push('--message-format=json')
       argv.push('--no-run')
       cargo(argv, (out) => {
-        test(JSON.parse(out).filenames[0])
+        let lines = out.split('\n')
+        for (let i in lines) {
+          let filenames = JSON.parse(lines[i]).filenames
+          if (filenames && filenames.length > 0 && filenames[0].match("\.js$")) {
+            test(filenames[0])
+            return
+          }
+        }
+        log("couldn't identify test binary")
+        process.exit(1)
       })
       return
     case 'build':
