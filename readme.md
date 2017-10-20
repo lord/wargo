@@ -36,3 +36,4 @@ Don't want to install Selenium? `wargo` can also run tests using [Sauce Connect]
 - [ ] sha check downloaded binaries
 - [ ] pass arguments to test binary
 - [ ] colored output from test binary
+- [ ] automatically print a . every 5 minutes so Travis doesn't go to sleep
