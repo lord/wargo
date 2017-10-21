@@ -28,13 +28,4 @@ Don't want to install Selenium? `wargo` can also run tests using [Sauce Connect]
     export WEBDRIVER_CAPABILITIES='{"browserName": "chrome"}'
     wargo test
 
-## TODO
-
-- [x] errors for webdriver connection failure
-- [ ] build for debian
-- [ ] detect python 2 vs 3
-- [ ] print less crap to the console
-- [ ] sha check downloaded binaries
-- [ ] pass arguments to test binary
-- [ ] colored output from test binary
-- [ ] automatically print a . every 5 minutes so Travis doesn't go to sleep
+For more information, check out [the tutorial blog post](https://lord.io/blog/2017/wargo).
