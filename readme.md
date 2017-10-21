@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/lord/img/master/logo-wargo.png" alt="wargo: Easy Rust to Webassembly" width="226">
   <br>
   <a href="https://travis-ci.org/lord/wargo"><img src="https://travis-ci.org/lord/wargo.svg?branch=master" alt="Build Status"></a>
-  <a href="https://www.npmjs.com/package/wargo"><img src="https://img.shields.io/npm/v/wargo.svg" alt="Build Status"></a>
+  <a href="https://www.npmjs.com/package/wargo"><img src="https://img.shields.io/npm/v/wargo.svg" alt="NPM Version"></a>
 </p>
 
 `wargo` makes it easy to compile Rust into WebAssembly on macOS or Linux. To install:
@@ -31,6 +31,7 @@ Don't want to install Selenium? `wargo` can also run tests using [Sauce Connect]
 ## TODO
 
 - [x] errors for webdriver connection failure
+- [ ] build for debian
 - [ ] detect python 2 vs 3
 - [ ] print less crap to the console
 - [ ] sha check downloaded binaries
