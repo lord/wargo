@@ -17,15 +17,15 @@ To use, just `wargo build` instead of `cargo build`. We'll automatically make su
 
 Want to run your tests in the browser? No problem — we've got `wargo test`. Just run Selenium locally, set some environment variables, and you're ready to go.
 
-    WEBDRIVER_HOST="localhost"
-    WEBDRIVER_PORT="5555"
+    export WEBDRIVER_HOST="localhost"
+    export WEBDRIVER_PORT="5555"
     wargo test
 
 Don't want to install Selenium? `wargo` can also run tests using [Sauce Connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy).
 
-    SAUCE_USERNAME="your username"
-    SAUCE_ACCESS_KEY="blah-1234-1234-1234"
-    WEBDRIVER_CAPABILITIES='{"browserName": "chrome"}'
+    export SAUCE_USERNAME="your username"
+    export SAUCE_ACCESS_KEY="blah-1234-1234-1234"
+    export WEBDRIVER_CAPABILITIES='{"browserName": "chrome"}'
     wargo test
 
 ## TODO

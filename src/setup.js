@@ -45,6 +45,7 @@ module.exports = function() {
       ['cmake --version', 'cmake', 'cmake not found. Try installing with `brew install cmake` and rerunning?'],
       ['python --version', 'python', 'python not found. Try installing with `brew install python` and rerunning?'],
       ['curl --version', 'curl', 'curl not found. Try installing with `brew install curl` and rerunning?'],
+      ['git --version', 'git', 'git not found. Try installing with `brew install git` and rerunning?'],
     ]
   } else {
     checks = [
@@ -53,6 +54,7 @@ module.exports = function() {
       ['cmake --version', 'cmake', 'cmake not found. Try installing with `sudo apt-get install cmake` and rerunning?'],
       ['python --version', 'python', 'python not found. Try installing with `sudo apt-get install python` and rerunning?'],
       ['curl --version', 'curl', 'curl not found. Try installing with `sudo apt-get install curl` and rerunning?'],
+      ['git --version', 'git', 'git not found. Try installing with `sudo apt-get install git` and rerunning?'],
     ]
   }
 
