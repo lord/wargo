@@ -44,10 +44,10 @@ module.exports = function() {
 
   let cmakeVersionCheck = (out) => {
     let matches = out.match(new RegExp(/version (\d+)\.(\d+).(\d+)/, "m"))
-    let v1 = parseInt(matches[1])
-    let v2 = parseInt(matches[2])
-    let v3 = parseInt(matches[3])
     if (matches) {
+      let v1 = parseInt(matches[1])
+      let v2 = parseInt(matches[2])
+      let v3 = parseInt(matches[3])
       if (v1>3 || (v1===3 && v2>4) || (v1===3 && v2===4 && v3>=3)) {
         return true
       }
@@ -58,6 +58,20 @@ module.exports = function() {
       return true
     }
   }
+  let pythonVersionCheck = (out) => {
+    let matches = out.match(new RegExp(/Python (\d+)\.(\d+)/, "m"))
+    if (matches) {
+      let v1 = parseInt(matches[1])
+      let v2 = parseInt(matches[2])
+      if (v1>=3) {
+        log(`looks like your python is Python 3, unfortunately emsdk expects Python 2`)
+        return false
+      }
+    } else {
+      log('failed to detect python version. make sure python points to python 2')
+    }
+    return true
+  }
 
   if (process.platform === "darwin") {
     checks = [
@@ -65,7 +79,7 @@ module.exports = function() {
       ['rustup --version', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
       ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
       ['cmake --version', 'cmake', 'cmake 3.4.3 or newer not found. Try installing with `brew install cmake` and rerunning?', cmakeVersionCheck],
-      ['python --version', 'python', 'python not found. Try installing with `brew install python` and rerunning?'],
+      ['python --version 2>&1', 'python', 'python not found. Try installing with `brew install python` and rerunning?', pythonVersionCheck],
       ['curl --version', 'curl', 'curl not found. Try installing with `brew install curl` and rerunning?'],
       ['git --version', 'git', 'git not found. Try installing with `brew install git` and rerunning?'],
     ]
@@ -74,7 +88,7 @@ module.exports = function() {
       ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
       ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
       ['cmake --version', 'cmake', 'cmake 3.4.3 or newer not found. Try installing with `sudo apt-get install cmake` and rerunning?', cmakeVersionCheck],
-      ['python --version', 'python', 'python not found. Try installing with `sudo apt-get install python` and rerunning?'],
+      ['python --version 2>&1', 'python', 'python not found. Try installing with `sudo apt-get install python` and rerunning?', pythonVersionCheck],
       ['curl --version', 'curl', 'curl not found. Try installing with `sudo apt-get install curl` and rerunning?'],
       ['git --version', 'git', 'git not found. Try installing with `sudo apt-get install git` and rerunning?'],
     ]
