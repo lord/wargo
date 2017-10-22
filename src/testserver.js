@@ -1,15 +1,15 @@
-'use strict'
+"use strict";
 
-const staticSrv = require('node-static');
-const path = require('path')
+const staticSrv = require("node-static");
+const path = require("path");
 
-let jsname = path.posix.basename(process.argv[2])
-let staticdir = path.join(path.posix.dirname(process.argv[2]), 'deps')
+let jsname = path.posix.basename(process.argv[2]);
+let staticdir = path.join(path.posix.dirname(process.argv[2]), "deps");
 let staticServe = new staticSrv.Server(staticdir);
-require('http').createServer(function (request, response) {
-  if (request.url === '/') {
+require("http").createServer(function (request, response) {
+  if (request.url === "/") {
     response.statusCode = 200;
-    response.setHeader('Content-Type', 'text/html');
+    response.setHeader("Content-Type", "text/html");
     response.end(`
       <doctype !HTML>
       <html>
@@ -33,7 +33,7 @@ require('http').createServer(function (request, response) {
       </html>
     `);
   } else {
-    request.addListener('end', function () {
+    request.addListener("end", function () {
       staticServe.serve(request, response);
     }).resume();
   }
