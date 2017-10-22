@@ -87,10 +87,10 @@ module.exports = function() {
     checks = [
       ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
       ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
-      ['cmake --version', 'cmake', 'cmake 3.4.3 or newer not found. Try installing with `sudo apt-get install cmake` and rerunning?', cmakeVersionCheck],
-      ['python --version 2>&1', 'python', 'python not found. Try installing with `sudo apt-get install python` and rerunning?', pythonVersionCheck],
-      ['curl --version', 'curl', 'curl not found. Try installing with `sudo apt-get install curl` and rerunning?'],
-      ['git --version', 'git', 'git not found. Try installing with `sudo apt-get install git` and rerunning?'],
+      ['cmake --version', 'cmake', 'cmake 3.4.3 or newer not found. Try installing cmake via your distributions package manager', cmakeVersionCheck],
+      ['python --version 2>&1', 'python', 'python not found. Try installing python via your distributions package manager', pythonVersionCheck],
+      ['curl --version', 'curl', 'curl not found. Try installing curl via your distributions package manager'],
+      ['git --version', 'git', 'git not found. Try installing git via your distributions package manager'],
     ]
   }
 
