@@ -76,7 +76,7 @@ module.exports = function() {
   if (process.platform === "darwin") {
     checks = [
       ['brew --version', 'brew', 'brew not found. Try installing at https://brew.sh and rerunning?'],
-      ['rustup --version', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
+      ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
       ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
       ['cmake --version', 'cmake', 'cmake 3.4.3 or newer not found. Try installing with `brew install cmake` and rerunning?', cmakeVersionCheck],
       ['python --version 2>&1', 'python', 'python not found. Try installing with `brew install python` and rerunning?', pythonVersionCheck],
