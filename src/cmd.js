@@ -1,6 +1,6 @@
-"use strict"
+'use strict'
 
-const child_process = require('child_process')
+const childProcess = require('child_process')
 const setup = require('./setup')
 const cargo = require('./cargo')
 const test = require('./test')
@@ -17,17 +17,17 @@ Some special commands are:
     test    builds the test binary into WebAssembly, and then runs it using selenium
     setup   just installs emcc without building anything`
 
-module.exports = function(argv) {
+module.exports = function (argv) {
   let subcommand = argv[0]
   if (subcommand === undefined) {
-      console.warn(HELP_STR)
-      process.exit(0)
+    console.warn(HELP_STR)
+    process.exit(0)
   }
 
   setup()
 
   // sanity checks
-  child_process.execSync('emcc -v', {env: process.env, stdio: 'inherit'})
+  childProcess.execSync('emcc -v', {env: process.env, stdio: 'inherit'})
 
   switch (subcommand) {
     case 'setup':
@@ -44,17 +44,18 @@ module.exports = function(argv) {
           for (let i in lines) {
             if (lines[i].trim().length > 0) {
               let dat = JSON.parse(lines[i])
-              if (dat && dat.profile && dat.profile.test)
-                if (dat.filenames && dat.filenames.length > 0 && dat.filenames[0].match("\.js$")) {
+              if (dat && dat.profile && dat.profile.test) {
+                if (dat.filenames && dat.filenames.length > 0 && dat.filenames[0].match('\\.js$')) {
                   test(dat.filenames[0])
                   return
                 } else {
-                  child_process.execSync('find target', {env: process.env, stdio: 'inherit'})
+                  childProcess.execSync('find target', {env: process.env, stdio: 'inherit'})
                 }
+              }
             }
           }
           log("couldn't identify test binary")
-          log("output was", JSON.stringify(out))
+          log('output was', JSON.stringify(out))
           process.exit(1)
         })
       })
@@ -65,6 +66,5 @@ module.exports = function(argv) {
       return
     default:
       cargo(argv)
-      return
   }
 }

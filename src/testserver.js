@@ -1,15 +1,15 @@
 'use strict'
 
-const staticSrv = require('node-static');
+const staticSrv = require('node-static')
 const path = require('path')
 
 let jsname = path.posix.basename(process.argv[2])
 let staticdir = path.join(path.posix.dirname(process.argv[2]), 'deps')
-let staticServe = new staticSrv.Server(staticdir);
+let staticServe = new staticSrv.Server(staticdir)
 require('http').createServer(function (request, response) {
   if (request.url === '/') {
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'text/html');
+    response.statusCode = 200
+    response.setHeader('Content-Type', 'text/html')
     response.end(`
       <doctype !HTML>
       <html>
@@ -31,10 +31,10 @@ require('http').createServer(function (request, response) {
         <body>
         </body>
       </html>
-    `);
+    `)
   } else {
     request.addListener('end', function () {
-      staticServe.serve(request, response);
-    }).resume();
+      staticServe.serve(request, response)
+    }).resume()
   }
-}).listen(9182);
+}).listen(9182)

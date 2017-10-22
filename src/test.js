@@ -1,14 +1,14 @@
-"use strict"
+'use strict'
 
-const child_process = require('child_process')
+const childProcess = require('child_process')
 const log = require('./log')
 
-function check(client) {
+function check (client) {
   return client
-    .execute(function() {
-      var res = [window.runtimeExited, window.EXITSTATUS, window.TEST_LOGS];
-      window.TEST_LOGS=[];
-      return res;
+    .execute(function () {
+      var res = [window.runtimeExited, window.EXITSTATUS, window.TEST_LOGS]
+      window.TEST_LOGS = []
+      return res
     })
     .then((res) => {
       let val = res.value
@@ -26,17 +26,17 @@ function check(client) {
     })
 }
 
-module.exports = function(filename) {
+module.exports = function (filename) {
   log('running tests...')
 
-  let child = child_process.exec(`node testserver.js ${filename}`, {cwd: __dirname}, function(err) {
+  let child = childProcess.exec(`node testserver.js ${filename}`, {cwd: __dirname}, function (err) {
     if (err) {
       console.warn(err)
       process.exit(1)
     }
   })
-  process.on('exit', function() {
-    child.kill();
+  process.on('exit', function () {
+    child.kill()
   })
 
   var capabilities = {}
@@ -56,10 +56,10 @@ module.exports = function(filename) {
   })
 
   client
-    .on('error', function(e) {
+    .on('error', function (e) {
       console.log('webdriver error:', e)
     })
-    .on('end', function(e) {
+    .on('end', function (e) {
       console.log('webdriver end:', e)
     })
     .init()

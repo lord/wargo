@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-"use strict"
+'use strict'
 const getos = require('getos')
 const log = require('./src/log')
 
