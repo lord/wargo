@@ -1,5 +1,4 @@
 "use strict";
-/* eslint-disable*/
 
 const child_process = require("child_process");
 const log = require("./log");
@@ -7,7 +6,9 @@ const log = require("./log");
 function check(client) {
   return client
     .execute(function() {
+      // eslint-disable-next-line no-undef
       var res = [window.runtimeExited, window.EXITSTATUS, window.TEST_LOGS];
+      // eslint-disable-next-line no-undef
       window.TEST_LOGS = [];
       return res;
     })
@@ -65,9 +66,11 @@ module.exports = function(filename) {
 
   client
     .on("error", function(e) {
+      // eslint-disable-next-line no-console
       console.log("webdriver error:", e);
     })
     .on("end", function(e) {
+      // eslint-disable-next-line no-console
       console.log("webdriver end:", e);
     })
     .init()
