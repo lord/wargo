@@ -1,16 +1,15 @@
 'use strict'
 
-const log = require("./log");
-const getChecksForDistro = require("./dependencyChecks").getChecksForDistro;
-const childProcess = require("child_process");
-const chalk = require("chalk");
+const log = require('./log')
+const getChecksForDistro = require('./dependencyChecks').getChecksForDistro
+const childProcess = require('child_process')
+const chalk = require('chalk')
 
 const CROSS = chalk.red.bold('✘')
 const EMSDK_URL = 'https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz'
 const EMSDK_URL_PREBUILT_TRUSTY = 'https://github.com/lord/emsdk-build/releases/download/initial/emsdk-trusty.tgz'
 
-
-function checkInstall(cmd, fn) {
+function checkInstall (cmd, fn) {
   let res
   try {
     res = childProcess.execSync(cmd, {stdio: 'pipe', env: process.env})
@@ -41,10 +40,8 @@ module.exports = function () {
 
   log('checking dependencies...')
 
-
-
-  const { dist, os } = process.detailedos;
-  const checks = getChecksForDistro(os, dist);
+  const { dist, os } = process.detailedos
+  const checks = getChecksForDistro(os, dist)
 
   let didErr = false
   checks.forEach(([cmd, name, errMsg, fn = null]) => {
