@@ -2,7 +2,7 @@
 
 const log = require("./log");
 const getChecksForDistro = require("./dependencyChecks").getChecksForDistro;
-const child_process = require("child_process");
+const childProcess = require("child_process");
 const chalk = require("chalk");
 
 const CROSS = chalk.red.bold('✘')
