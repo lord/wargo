@@ -1,8 +1,9 @@
 'use strict'
 
-const log = require('./log')
-const getChecksForDistro = require('./helpers').getChecksForDistro;
-const chalk = require('chalk')
+const log = require("./log");
+const getChecksForDistro = require("./dependencyChecks").getChecksForDistro;
+const child_process = require("child_process");
+const chalk = require("chalk");
 
 const CROSS = chalk.red.bold('✘')
 const EMSDK_URL = 'https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz'
@@ -42,9 +43,8 @@ module.exports = function () {
 
 
 
-  const checks = getChecksForDistro(process.detailedos.dist);
-  console.log(checks);
-  
+  const { dist, os } = process.detailedos;
+  const checks = getChecksForDistro(os, dist);
 
   let didErr = false
   checks.forEach(([cmd, name, errMsg, fn = null]) => {

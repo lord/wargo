@@ -39,12 +39,25 @@ const getChecksWithCommands = (command) => [
       ['git --version', 'git', `git not found. Try installing with '${command} git' and rerunning?`],
   ]
 
-function getChecksForDistro(distro) {
+function getChecksForDistro(os, distro) {
   const distroChecks = {
     darwin: [
-      ['brew --version', 'brew', 'brew not found. Try installing at https://brew.sh and rerunning?'],
-      ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
-    ].concat(getChecksWithCommands('brew install')),
+      [
+        "brew --version",
+        "brew",
+        "brew not found. Try installing at https://brew.sh and rerunning?"
+      ],
+      [
+        "rustup target add wasm32-unknown-emscripten",
+        "rustup",
+        "rustup not found. Try installing at https://rustup.rs and rerunning?"
+      ],
+      [
+        "cargo --version",
+        "cargo",
+        "cargo not found. Try installing at https://rustup.rs and rerunning?"
+      ]
+    ].concat(getChecksWithCommands("brew install")),
     fedora: [
       ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
       ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
@@ -61,15 +74,22 @@ function getChecksForDistro(distro) {
       ['curl --version', 'curl', 'curl not found. Try installing curl via your distributions package manager'],
       ['git --version', 'git', 'git not found. Try installing git via your distributions package manager'],
     ]
-
-  }
-  const lowerKeyDistro = distro.toLowerCase();
-  const distroKey =  Object.keys(distroChecks).find(key => key.includes(lowerKeyDistro));
-  if (!distroKey) {
+  };
+  const lowerKeyOs = os.toLowerCase();
+  if (lowerKeyOs === "darwin") {
+    return distroChecks.darwin;
+  } else if (distro) {
+    const lowerKeyDistro = distro.toLowerCase();
+    const distroKey = Object.keys(distroChecks).find(key =>
+      key.includes(lowerKeyDistro)
+    );
+    if (!distroKey) {
+      return distroChecks.default;
+    } else {
+      return distroChecks[distroKey];
+    }
+  } else {
     return distroChecks.default;
-  }
-  else {
-    return distroChecks[distroKey];
   }
 }
 
