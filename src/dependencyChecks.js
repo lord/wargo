@@ -39,108 +39,72 @@ const pythonVersionCheck = out => {
   return true
 }
 
-const getChecksWithCommands = command => [
-  [
-    'cmake --version',
-    'cmake',
-    `cmake 3.4.3 or newer not found. Try installing with '${command} cmake' and rerunning?`,
-    cmakeVersionCheck
-  ],
-  [
-    'python --version 2>&1',
-    'python',
-    `python not found. Try installing with '${command} python' and rerunning?`,
-    pythonVersionCheck
-  ],
-  [
-    'curl --version',
-    'curl',
-    `curl not found. Try installing with '${command} curl' and rerunning?`
-  ],
-  [
-    'git --version',
-    'git',
-    `git not found. Try installing with '${command} git' and rerunning?`
-  ]
-]
+const getChecksForDependenciesWithCommands = (
+  dependencies,
+  preDependencyCommand,
+  postDependencyCommand
+) => {
+  const dependenciesTemplate = {
+    cmake: [
+      'cmake --version',
+      'cmake',
+      `cmake 3.4.3 or newer not found. Try installing '${preDependencyCommand} cmake ${postDependencyCommand}' and rerunning?`,
+      cmakeVersionCheck
+    ],
+    python: [
+      'python --version 2>&1',
+      'python',
+      `python not found. Try installing '${preDependencyCommand} python ${postDependencyCommand}' and rerunning?`,
+      pythonVersionCheck
+    ],
+    curl: [
+      'curl --version',
+      'curl',
+      `curl not found. Try installing '${preDependencyCommand} curl ${postDependencyCommand}' and rerunning?`
+    ],
+    git: [
+      'git --version',
+      'git',
+      `git not found. Try installing '${preDependencyCommand} git ${postDependencyCommand}' and rerunning?`
+    ],
+    brew: [
+      'brew --version',
+      'brew',
+      'brew not found. Try installing at https://brew.sh and rerunning?'
+    ],
+    rustup: [
+      'rustup target add wasm32-unknown-emscripten',
+      'rustup',
+      'rustup not found. Try installing at https://rustup.rs and rerunning?'
+    ],
+    cargo: [
+      'cargo --version',
+      'cargo',
+      'cargo not found. Try installing at https://rustup.rs and rerunning?'
+    ]
+  }
+  return dependencies.map(dependency => dependenciesTemplate[dependency])
+}
 
 function getChecksForDistro (os, distro) {
   const distroChecks = {
-    darwin: [
-      [
-        'brew --version',
-        'brew',
-        'brew not found. Try installing at https://brew.sh and rerunning?'
-      ],
-      [
-        'rustup target add wasm32-unknown-emscripten',
-        'rustup',
-        'rustup not found. Try installing at https://rustup.rs and rerunning?'
-      ],
-      [
-        'cargo --version',
-        'cargo',
-        'cargo not found. Try installing at https://rustup.rs and rerunning?'
-      ]
-    ].concat(getChecksWithCommands('brew install')),
-    fedora: [
-      [
-        'rustup target add wasm32-unknown-emscripten',
-        'rustup',
-        'rustup not found. Try installing at https://rustup.rs and rerunning?'
-      ],
-      [
-        'cargo --version',
-        'cargo',
-        'cargo not found. Try installing at https://rustup.rs and rerunning?'
-      ]
-    ].concat(getChecksWithCommands('sudo dnf install')),
-    ubuntu: [
-      [
-        'rustup target add wasm32-unknown-emscripten',
-        'rustup',
-        'rustup not found. Try installing at https://rustup.rs and rerunning?'
-      ],
-      [
-        'cargo --version',
-        'cargo',
-        'cargo not found. Try installing at https://rustup.rs and rerunning?'
-      ]
-    ].concat(getChecksWithCommands('sudo apt-get')),
-    default: [
-      [
-        'rustup target add wasm32-unknown-emscripten',
-        'rustup',
-        'rustup not found. Try installing at https://rustup.rs and rerunning?'
-      ],
-      [
-        'cargo --version',
-        'cargo',
-        'cargo not found. Try installing at https://rustup.rs and rerunning?'
-      ],
-      [
-        'cmake --version',
-        'cmake',
-        'cmake 3.4.3 or newer not found. Try installing cmake via your distributions package manager',
-        cmakeVersionCheck
-      ],
-      [
-        'python --version 2>&1',
-        'python',
-        'python not found. Try installing python via your distributions package manager',
-        pythonVersionCheck
-      ],
-      [
-        'curl --version',
-        'curl',
-        'curl not found. Try installing curl via your distributions package manager'
-      ],
-      [
-        'git --version',
-        'git',
-        'git not found. Try installing git via your distributions package manager'
-      ]
-    ]
+    darwin: getChecksForDependenciesWithCommands(
+      ['brew', 'rustup', 'cargo', 'git', 'curl', 'python', 'cmake'],
+      'with brew install'
+    ),
+    fedora: getChecksForDependenciesWithCommands(
+      ['rustup', 'cargo', 'git', 'curl', 'python', 'cmake'],
+      'with sudo dnf install'
+    ),
+    ubuntu: getChecksForDependenciesWithCommands(
+      ['rustup', 'cargo', 'git', 'curl', 'python', 'cmake'],
+      'with sudo apt-get install'
+    ),
+    default: getChecksForDependenciesWithCommands(
+      ['rustup', 'cargo', 'git', 'curl', 'python', 'cmake'],
+      '',
+      'via your distributions package manager'
+    )
   }
   const lowerKeyOs = os.toLowerCase()
   if (lowerKeyOs === 'darwin') {
