@@ -34,6 +34,7 @@ function getEnv () {
 module.exports = function () {
   if (checkInstall('emcc --version')) {
     log('using emcc already in $PATH')
+    log('this may cause bugs...if you encounter errors, try removing it from $PATH and rerunning')
     return
   }
 
@@ -56,19 +57,6 @@ module.exports = function () {
       return true
     }
   }
-  let pythonVersionCheck = (out) => {
-    let matches = out.match(new RegExp(/Python (\d+)\.(\d+)/, 'm'))
-    if (matches) {
-      let v1 = parseInt(matches[1])
-      if (v1 >= 3) {
-        log(`looks like your python is Python 3, unfortunately emsdk expects Python 2`)
-        return false
-      }
-    } else {
-      log('failed to detect python version. make sure python points to python 2')
-    }
-    return true
-  }
 
   if (process.platform === 'darwin') {
     checks = [
@@ -76,7 +64,7 @@ module.exports = function () {
       ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
       ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
       ['cmake --version', 'cmake', 'cmake 3.4.3 or newer not found. Try installing with `brew install cmake` and rerunning?', cmakeVersionCheck],
-      ['python --version 2>&1', 'python', 'python not found. Try installing with `brew install python` and rerunning?', pythonVersionCheck],
+      ['python --version', 'python', 'python not found. Try installing with `brew install python` and rerunning?'],
       ['curl --version', 'curl', 'curl not found. Try installing with `brew install curl` and rerunning?'],
       ['git --version', 'git', 'git not found. Try installing with `brew install git` and rerunning?']
     ]
@@ -85,7 +73,7 @@ module.exports = function () {
       ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
       ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
       ['cmake --version', 'cmake', 'cmake 3.4.3 or newer not found. Try installing with `sudo apt-get install cmake` and rerunning?', cmakeVersionCheck],
-      ['python --version 2>&1', 'python', 'python not found. Try installing with `sudo apt-get install python` and rerunning?', pythonVersionCheck],
+      ['python --version', 'python', 'python not found. Try installing with `sudo apt-get install python` and rerunning?'],
       ['curl --version', 'curl', 'curl not found. Try installing with `sudo apt-get install curl` and rerunning?'],
       ['git --version', 'git', 'git not found. Try installing with `sudo apt-get install git` and rerunning?']
     ]
