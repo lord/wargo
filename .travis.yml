@@ -18,6 +18,7 @@ script:
   - cd exampleproj
   - while true; do sleep 300; echo "stay awake..."; done &
   - wargo test --verbose
+  - wargo -- echo meow
 
 addons:
   sauce_connect:

@@ -11,11 +11,13 @@ on any linux or mac os computer.
 
 Usage:
     wargo <cargo subcommand> [<args>...]
+    wargo -- <command> [<args>...]
 
 Some special commands are:
     build   runs 'cargo build --target=wasm32... <args>'
     test    builds the test binary into WebAssembly, and then runs it using selenium
-    setup   just installs emcc without building anything`
+    setup   just installs emcc without building anything
+    --      runs non-cargo program with emcc environment set`
 
 module.exports = function (argv) {
   let subcommand = argv[0]
@@ -30,6 +32,12 @@ module.exports = function (argv) {
   childProcess.execSync('emcc -v', {env: process.env, stdio: 'inherit'})
 
   switch (subcommand) {
+    case '--':
+      argv.slice(1)
+      let command = argv.slice(1).join(' ')
+      log(`running '${command}'`)
+      childProcess.execSync(command, {env: process.env, stdio: 'inherit'})
+      process.exit(0)
     case 'setup':
       process.exit(0)
     case 'test':
