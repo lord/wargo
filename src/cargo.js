@@ -36,6 +36,10 @@ module.exports = function (args, captureStdOut = false, done = null, tryagain = 
         childProcess.execSync(FIXLLVMMAC, {stdio: [null, process.stdout, process.stderr], env: process.env})
         log('rerunning cargo command...')
         module.exports(args, done, false)
+        return
+      } else if (errBuf.indexOf('the `wasm32-unknown-emscripten` target may not be installed') >= 0) {
+        log("looks like you're missing the wasm target. sometimes this happens when using the system-installed emscripten.")
+        log('to fix, either remove `emcc` from your $PATH, or run rustup target add wasm32-unknown-emscripten')
       }
       process.exit(code)
     } else if (done) {
