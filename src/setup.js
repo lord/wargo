@@ -60,22 +60,28 @@ module.exports = function () {
 
   if (process.platform === 'darwin') {
     checks = [
-      ['brew --version', 'brew', 'brew not found. Try installing at https://brew.sh and rerunning?'],
-      ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
-      ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
-      ['cmake --version', 'cmake', 'cmake 3.4.3 or newer not found. Try installing with `brew install cmake` and rerunning?', cmakeVersionCheck],
-      ['python --version', 'python', 'python not found. Try installing with `brew install python` and rerunning?'],
-      ['curl --version', 'curl', 'curl not found. Try installing with `brew install curl` and rerunning?'],
-      ['git --version', 'git', 'git not found. Try installing with `brew install git` and rerunning?']
+      [`brew --version`, `brew`, `brew not found. Try installing at https://brew.sh and rerunning?`],
+      [`rustup target add wasm32-unknown-emscripten`, `rustup`, `rustup not found. Try installing at https://rustup.rs and rerunning?`],
+      [`cargo --version`, `cargo`, `cargo not found. Try installing at https://rustup.rs and rerunning?`],
+      [`cmake --version`, `cmake`, `cmake 3.4.3 or newer not found. Try installing with 'brew install cmake' and rerunning?`, cmakeVersionCheck],
+      [`python --version`, `python`, `python not found. Try installing with 'brew install python' and rerunning?`],
+      [`curl --version`, `curl`, `curl not found. Try installing with 'brew install curl' and rerunning?`],
+      [`git --version`, `git`, `git not found. Try installing with 'brew install git' and rerunning?`]
     ]
   } else {
+    let pkgm = '<your package manager>'
+    if (process.detailedos.dist === 'Ubuntu Linux' || process.detailedos.dist === 'Debian') {
+      pkgm = 'sudo apt-get install'
+    } else if (process.detailedos.dist === 'Fedora') {
+      pkgm = 'sudo dnf install'
+    }
     checks = [
-      ['rustup target add wasm32-unknown-emscripten', 'rustup', 'rustup not found. Try installing at https://rustup.rs and rerunning?'],
-      ['cargo --version', 'cargo', 'cargo not found. Try installing at https://rustup.rs and rerunning?'],
-      ['cmake --version', 'cmake', 'cmake 3.4.3 or newer not found. Try installing with `sudo apt-get install cmake` and rerunning?', cmakeVersionCheck],
-      ['python --version', 'python', 'python not found. Try installing with `sudo apt-get install python` and rerunning?'],
-      ['curl --version', 'curl', 'curl not found. Try installing with `sudo apt-get install curl` and rerunning?'],
-      ['git --version', 'git', 'git not found. Try installing with `sudo apt-get install git` and rerunning?']
+      [`rustup target add wasm32-unknown-emscripten`, `rustup`, `rustup not found. Try installing at https://rustup.rs and rerunning?`],
+      [`cargo --version`, `cargo`, `cargo not found. Try installing at https://rustup.rs and rerunning?`],
+      [`cmake --version`, `cmake`, `cmake 3.4.3 or newer not found. Try installing with '${pkgm} cmake' and rerunning?`, cmakeVersionCheck],
+      [`python --version`, `python`, `python not found. Try installing with '${pkgm} python' and rerunning?`],
+      [`curl --version`, `curl`, `curl not found. Try installing with '${pkgm} curl' and rerunning?`],
+      [`git --version`, `git`, `git not found. Try installing with '${pkgm} git' and rerunning?`]
     ]
   }
 
